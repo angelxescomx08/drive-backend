@@ -1,0 +1,14 @@
+{
+  "name": "drive-backend",
+  "version": "1.0.0",
+  "description": "A drive clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jose Angel Hernandez Radilla",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.4"
+  }
+}
