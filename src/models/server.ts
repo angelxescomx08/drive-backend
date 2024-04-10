@@ -1,13 +1,16 @@
 import express, { Express } from "express";
 import authRouter from "../routes/auth";
+import { Database } from "../db/db";
 
 export class Server {
   private app!: Express;
   private port!: number;
+  private db!: Database;
 
   constructor() {
     this.app = express();
     this.port = 3000;
+    this.db = new Database();
 
     this.middlewares();
     this.applyRoutes();
