@@ -10,6 +10,16 @@ Para instalar las dependencias del proyecto, ejecuta el siguiente comando:
 npm install
 ```
 
+## Configuración
+
+Para configurar el proyecto, crea un archivo `.env` en la raíz del proyecto con el siguiente contenido,
+las claves han sido obtenidas de una base de datos creada en turso:
+
+```env
+URL_DATABASE=
+DB_AUTH_TOKEN=
+```
+
 ## Ejecucion modo desarrollo
 
 Para ejecutar el proyecto en modo desarrollo, ejecuta el siguiente comando:
