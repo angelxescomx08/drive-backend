@@ -10,14 +10,14 @@ export class Server {
     this.port = 3000;
 
     this.middlewares();
-    this.aplyRoutes();
+    this.applyRoutes();
   }
 
   middlewares() {
     this.app.use(express.json());
   }
 
-  aplyRoutes() {
+  applyRoutes() {
     this.app.use("/auth", authRouter);
   }
 

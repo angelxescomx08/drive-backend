@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { schemaAuthBodyLogin } from "../types/auth.types";
-import { zodError } from "../constants/zod.constants";
 
 const authRouter = Router();
 
