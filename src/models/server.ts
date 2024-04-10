@@ -9,7 +9,12 @@ export class Server {
     this.app = express();
     this.port = 3000;
 
+    this.middlewares();
     this.aplyRoutes();
+  }
+
+  middlewares() {
+    this.app.use(express.json());
   }
 
   aplyRoutes() {

@@ -2,9 +2,10 @@ import { Router } from "express";
 
 const authRouter = Router();
 
-authRouter.get("/login", (req, res) => {
+authRouter.post("/login", (req, res) => {
+  const body = req.body;
   res.json({
-    message: "Hello world",
+    ...body,
   });
 });
 
