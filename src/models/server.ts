@@ -1,6 +1,11 @@
 import express, { Express } from "express";
+import cors from "cors";
+
 import authRouter from "../routes/auth";
-import { Database } from "../db/db";
+import userRouter from "../routes/user";
+
+import { Database } from "../models/db";
+import { addDatabaseToRequest } from "../middlewares/db.middleware";
 
 export class Server {
   private app!: Express;
@@ -17,11 +22,14 @@ export class Server {
   }
 
   middlewares() {
+    this.app.use(cors());
     this.app.use(express.json());
+    this.app.use(addDatabaseToRequest(this.db));
   }
 
   applyRoutes() {
     this.app.use("/auth", authRouter);
+    this.app.use("/user", userRouter);
   }
 
   listen() {

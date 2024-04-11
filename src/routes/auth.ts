@@ -17,4 +17,10 @@ authRouter.post("/login", (req, res) => {
   }
 });
 
+authRouter.post("/register", (req, res) => {
+  res.json({
+    message: "Register route",
+  });
+});
+
 export default authRouter;
