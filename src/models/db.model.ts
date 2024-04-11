@@ -1,5 +1,5 @@
 import { Client, createClient } from "@libsql/client";
-import { User } from "./user";
+import { User } from "./user.model";
 
 export class Database {
   private client!: Client;

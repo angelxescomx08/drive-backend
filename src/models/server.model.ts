@@ -1,10 +1,10 @@
 import express, { Express } from "express";
 import cors from "cors";
 
-import authRouter from "../routes/auth";
-import userRouter from "../routes/user";
+import authRouter from "../routes/auth.routes";
+import userRouter from "../routes/user.routes";
 
-import { Database } from "../models/db";
+import { Database } from "../models/db.model";
 import { addDatabaseToRequest } from "../middlewares/db.middleware";
 
 export class Server {
