@@ -1,4 +1,4 @@
-import { Database } from "./models/db";
+import { Database } from "./models/db.model";
 
 // Extiende la interfaz Request de Express
 declare global {
