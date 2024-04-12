@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import { schemaBodyCreateFolder } from "../types/folder.types";
 
+export const getFoldersByUserId = async (req: Request, res: Response) => {
+  try {
+  } catch (error) {
+    res.status(500).json({
+      message: "Something wrong happen",
+    });
+  }
+};
+
 export const createFolder = async (req: Request, res: Response) => {
   try {
     const resultBody = schemaBodyCreateFolder.safeParse(req.body);
