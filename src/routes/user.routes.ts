@@ -1,17 +1,8 @@
 import { Router } from "express";
+import { getUsers } from "../controllers/user.controller";
 
 const userRouter = Router();
 
-userRouter.get("/", async (req, res) => {
-  try {
-    const db = req.db;
-    const users = await db.user.getUsers();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({
-      message: "Something wrong happen",
-    });
-  }
-});
+userRouter.get("/", getUsers);
 
 export default userRouter;
