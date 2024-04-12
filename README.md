@@ -18,6 +18,7 @@ las claves han sido obtenidas de una base de datos creada en turso:
 ```env
 URL_DATABASE=
 DB_AUTH_TOKEN=
+JWT_PASSWORD=
 ```
 
 ## Ejecucion modo desarrollo

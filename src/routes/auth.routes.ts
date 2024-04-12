@@ -3,6 +3,7 @@ import {
   schemaAuthBodyLogin,
   schemaAuthBodyRegister,
 } from "../types/auth.types";
+import { signToken } from "../utils/token";
 
 const authRouter = Router();
 
@@ -13,9 +14,21 @@ authRouter.post("/login", async (req, res) => {
     if (resultBody.success) {
       const body = resultBody.data;
       const result = await req.db.user.verifyLogin(body);
-      res.json({
-        ...result,
-      });
+      if (result.success) {
+        const token = signToken({
+          email: result.user!.email as string,
+          id_user: result.user!.id_user as string,
+        });
+        res.json({
+          ...result,
+          token,
+        });
+      } else {
+        res.json({
+          ...result,
+          message: "Invalid credentials",
+        });
+      }
     } else {
       const error = resultBody.error;
       res.status(400).json(error);
