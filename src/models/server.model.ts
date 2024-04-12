@@ -6,6 +6,7 @@ import userRouter from "../routes/user.routes";
 
 import { Database } from "../models/db.model";
 import { addDatabaseToRequest } from "../middlewares/db.middleware";
+import folderRouter from "../routes/folder.routes";
 
 export class Server {
   private app!: Express;
@@ -30,6 +31,7 @@ export class Server {
   applyRoutes() {
     this.app.use("/auth", authRouter);
     this.app.use("/user", userRouter);
+    this.app.use("/folder", folderRouter);
   }
 
   listen() {
