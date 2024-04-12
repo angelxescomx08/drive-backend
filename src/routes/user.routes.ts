@@ -8,9 +8,8 @@ userRouter.get("/", async (req, res) => {
     const users = await db.user.getUsers();
     res.json(users);
   } catch (err) {
-    console.log(err);
-    res.json({
-      message: "Error",
+    res.status(500).json({
+      message: "Something wrong happen",
     });
   }
 });
