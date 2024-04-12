@@ -10,6 +10,7 @@ export class Database {
   constructor() {
     this.createClient();
     this.user = new User(this.client);
+    this.folder = new Folder(this.client);
   }
 
   createClient() {
