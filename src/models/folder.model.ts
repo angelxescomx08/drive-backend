@@ -10,7 +10,7 @@ export class Folder {
 
   async getRootFolders(id_user: string) {
     const result = await this.client.execute({
-      sql: "SELECT * FROM folder WHERE id_user = ? AND id_parent = NULL",
+      sql: "SELECT * FROM folder WHERE id_user = ? AND id_parent IS NULL",
       args: [id_user],
     });
     return result;

@@ -6,7 +6,7 @@ import {
 
 const folderRouter = Router();
 
-folderRouter.get("/:id_user", getFoldersByUserId);
+folderRouter.get("/user-folders/:id_user", getFoldersByUserId);
 folderRouter.post("/", createFolder);
 
 export default folderRouter;

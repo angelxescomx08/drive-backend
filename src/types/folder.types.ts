@@ -9,3 +9,11 @@ export const schemaBodyCreateFolder = z.object({
 });
 
 export type typeBodyCreateFolder = z.infer<typeof schemaBodyCreateFolder>;
+
+export const schemaParamIdUserGetFolder = schemaBodyCreateFolder.pick({
+  id_user: true,
+});
+
+export type typeParamIdUserGetFolder = z.infer<
+  typeof schemaParamIdUserGetFolder
+>;
