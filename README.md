@@ -21,6 +21,8 @@ DB_AUTH_TOKEN=
 JWT_PASSWORD=
 ```
 
+Nota en el caso de estar en desarrollo el archivo de desarrollo es `.env.development`
+
 ## Ejecucion modo desarrollo
 
 Para ejecutar el proyecto en modo desarrollo, ejecuta el siguiente comando:
