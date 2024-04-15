@@ -16,6 +16,14 @@ export class Folder {
     return result;
   }
 
+  async getFoldersOfParentFolder(id_user: string, id_parent_folder: string) {
+    const result = await this.client.execute({
+      sql: "SELECT * FROM folder WHERE id_user = ? AND id_parent = ?",
+      args: [id_user, id_parent_folder],
+    });
+    return result;
+  }
+
   async createFolder(folder: typeBodyCreateFolder) {
     const result = await this.client.batch(
       [

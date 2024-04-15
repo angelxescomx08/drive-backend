@@ -10,9 +10,13 @@ export const getFoldersByUserId = async (req: Request, res: Response) => {
     const paramsResult = schemaParamIdUserGetFolder.safeParse(req.params);
     const queryResult = schemaQueryGetFolders.safeParse(req.query);
     if (paramsResult.success && queryResult.success) {
-      const result = await req.db.folder.getRootFolders(
-        paramsResult.data.id_user
-      );
+      const { id_parent } = queryResult.data;
+      const result = id_parent
+        ? await req.db.folder.getFoldersOfParentFolder(
+            paramsResult.data.id_user,
+            id_parent
+          )
+        : await req.db.folder.getRootFolders(paramsResult.data.id_user);
       res.json(result.rows);
     } else {
       if (!paramsResult.success) {

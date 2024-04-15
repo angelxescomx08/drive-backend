@@ -19,9 +19,9 @@ export type typeParamIdUserGetFolder = z.infer<
 >;
 
 export const schemaQueryGetFolders = z.object({
-  limit: z.string().optional(),
-  page: z.string().optional(),
-  id_folder: z.string().uuid().optional(),
+  limit: z.string().regex(/^\d+$/).optional(),
+  page: z.string().regex(/^\d+$/).optional(),
+  id_parent: z.string().uuid().optional(),
 });
 
 export type typeQueryGetFolders = z.infer<typeof schemaQueryGetFolders>;
