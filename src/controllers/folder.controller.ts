@@ -2,19 +2,27 @@ import { Request, Response } from "express";
 import {
   schemaBodyCreateFolder,
   schemaParamIdUserGetFolder,
+  schemaQueryGetFolders,
 } from "../types/folder.types";
 
 export const getFoldersByUserId = async (req: Request, res: Response) => {
   try {
     const paramsResult = schemaParamIdUserGetFolder.safeParse(req.params);
-    if (paramsResult.success) {
+    const queryResult = schemaQueryGetFolders.safeParse(req.query);
+    if (paramsResult.success && queryResult.success) {
       const result = await req.db.folder.getRootFolders(
         paramsResult.data.id_user
       );
       res.json(result.rows);
     } else {
-      const error = paramsResult.error;
-      res.status(400).json(error);
+      if (!paramsResult.success) {
+        const error = paramsResult.error;
+        return res.status(400).json(error);
+      }
+      if (!queryResult.success) {
+        const error = queryResult.error;
+        return res.status(400).json(error);
+      }
     }
   } catch (error) {
     res.status(500).json({

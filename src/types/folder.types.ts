@@ -17,3 +17,11 @@ export const schemaParamIdUserGetFolder = schemaBodyCreateFolder.pick({
 export type typeParamIdUserGetFolder = z.infer<
   typeof schemaParamIdUserGetFolder
 >;
+
+export const schemaQueryGetFolders = z.object({
+  limit: z.string().optional(),
+  page: z.string().optional(),
+  id_folder: z.string().uuid().optional(),
+});
+
+export type typeQueryGetFolders = z.infer<typeof schemaQueryGetFolders>;
