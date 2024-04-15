@@ -10,7 +10,7 @@ CREATE TABLE "folder" (
   "id_user" varchar(64) NOT NULL,
   "folder_name" varchar NOT NULL,
   "created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  FOREIGN KEY ("id_user") REFERENCES "user" ("id_ user"),
+  FOREIGN KEY ("id_user") REFERENCES "user" ("id_user"),
   FOREIGN KEY ("id_parent") REFERENCES "folder" ("id_folder")
 );
 
