@@ -7,6 +7,7 @@ import userRouter from "../routes/user.routes";
 import { Database } from "../models/db.model";
 import { addDatabaseToRequest } from "../middlewares/db.middleware";
 import folderRouter from "../routes/folder.routes";
+import fileRouter from "../routes/file.routes";
 
 export class Server {
   private app!: Express;
@@ -32,6 +33,7 @@ export class Server {
     this.app.use("/auth", authRouter);
     this.app.use("/user", userRouter);
     this.app.use("/folder", folderRouter);
+    this.app.use("/file", fileRouter);
   }
 
   listen() {
