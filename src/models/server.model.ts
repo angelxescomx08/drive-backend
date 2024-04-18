@@ -33,6 +33,7 @@ export class Server {
     const upload = multer({
       storage: multerS3({
         s3: this.s3.getS3Client(),
+        acl: "public-read",
         bucket: process.env.AWS_BUCKET_NAME,
         metadata: function (req, file, cb) {
           cb(null, { fieldName: file.fieldname });
@@ -46,6 +47,7 @@ export class Server {
         },
       }),
     });
+
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(upload.array("files"));
