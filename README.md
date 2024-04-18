@@ -19,6 +19,10 @@ las claves han sido obtenidas de una base de datos creada en turso:
 URL_DATABASE=
 DB_AUTH_TOKEN=
 JWT_PASSWORD=
+AWS_ACCESS_KEY=
+AWS_SECRET_ACCESS_KEY=
+AWS_BUCKET_REGION=
+AWS_BUCKET_NAME=
 ```
 
 Nota en el caso de estar en desarrollo el archivo de desarrollo es `.env.development`
