@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { schemaBodyCreateFile } from "../types/file.types";
 
 export const createFile = async (req: Request, res: Response) => {
   try {

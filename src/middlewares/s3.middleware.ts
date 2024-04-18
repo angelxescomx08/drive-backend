@@ -7,3 +7,11 @@ export const addS3ToRequest = (s3: S3) => {
     next();
   };
 };
+
+export const multerUploadMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  return req.s3.getUpload().array("files")(req, res, next);
+};
