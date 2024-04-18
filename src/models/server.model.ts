@@ -38,7 +38,11 @@ export class Server {
           cb(null, { fieldName: file.fieldname });
         },
         key: function (req, file, cb) {
-          cb(null, `${Date.now().toString()}-${file.fieldname}`);
+          const fileExtension = file.originalname.split(".").pop();
+          const fileName = `${Date.now().toString()}-${
+            file.fieldname
+          }.${fileExtension}`;
+          cb(null, fileName);
         },
       }),
     });
