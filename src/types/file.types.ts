@@ -1,3 +1,4 @@
+import multer from "multer";
 import { z } from "zod";
 
 export const schemaFile = z.object({

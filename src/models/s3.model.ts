@@ -26,4 +26,8 @@ export class S3 {
     );
     return result;
   }
+
+  getS3Client() {
+    return this.s3Client;
+  }
 }

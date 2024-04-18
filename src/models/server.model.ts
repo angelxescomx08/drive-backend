@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import cors from "cors";
 import multer from "multer";
+import multerS3 from "multer-s3";
 
 import authRouter from "../routes/auth.routes";
 import userRouter from "../routes/user.routes";
@@ -29,7 +30,18 @@ export class Server {
   }
 
   middlewares() {
-    const upload = multer();
+    const upload = multer({
+      storage: multerS3({
+        s3: this.s3.getS3Client(),
+        bucket: process.env.AWS_BUCKET_NAME,
+        metadata: function (req, file, cb) {
+          cb(null, { fieldName: file.fieldname });
+        },
+        key: function (req, file, cb) {
+          cb(null, `${Date.now().toString()}-${file.fieldname}`);
+        },
+      }),
+    });
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(upload.array("files"));
