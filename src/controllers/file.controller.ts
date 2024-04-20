@@ -10,3 +10,5 @@ export const createFile = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteFiles = async (req: Request, res: Response) => {};
