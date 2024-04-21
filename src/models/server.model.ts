@@ -42,6 +42,10 @@ export class Server {
     this.app.use("/file", fileRouter);
   }
 
+  getApp() {
+    return this.app;
+  }
+
   listen() {
     this.app.listen(this.port, () => {
       console.log(`Server is running on port ${this.port}`);

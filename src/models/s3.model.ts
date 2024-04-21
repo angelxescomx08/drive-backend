@@ -1,4 +1,4 @@
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import multer, { Multer } from "multer";
 import multerS3 from "multer-s3";
 
@@ -46,5 +46,19 @@ export class S3 {
 
   getS3Client() {
     return this.s3Client;
+  }
+
+  async deleteFiles(keys: string[]) {
+    const result = await Promise.all(
+      keys.map((key) =>
+        this.s3Client.send(
+          new DeleteObjectCommand({
+            Key: key,
+            Bucket: process.env.AWS_BUCKET_NAME,
+          })
+        )
+      )
+    );
+    return result;
   }
 }

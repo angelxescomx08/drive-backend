@@ -1,4 +1,3 @@
-import multer from "multer";
 import { z } from "zod";
 
 export const schemaFile = z.object({
@@ -14,3 +13,9 @@ export const schemaFile = z.object({
 export const schemaBodyCreateFile = z.array(schemaFile);
 
 export type typeBodyCreateFile = z.infer<typeof schemaBodyCreateFile>;
+
+export const schemaBodyDeleteFile = z.object({
+  keys: z.array(z.string()),
+});
+
+export type typeBodyDeleteFile = z.infer<typeof schemaBodyDeleteFile>;
