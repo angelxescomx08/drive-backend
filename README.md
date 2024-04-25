@@ -27,7 +27,21 @@ AWS_BUCKET_NAME=
 
 Nota en el caso de estar en desarrollo el archivo de desarrollo es `.env.development`
 
-## Ejecucion modo desarrollo
+## Aplicar cambios del esquema a la base de datos
+
+Se pueden generar los cambios de la base de datos con el comando:
+
+```bash
+npx drizzle-kit generate:sqlite
+```
+
+Se pueden pushear los cambios directamente los cambios a la base de datos con el comando:
+
+```bash
+npx drizzle-kit push:sqlite
+```
+
+## Ejecución modo desarrollo
 
 Para ejecutar el proyecto en modo desarrollo, ejecuta el siguiente comando:
 
