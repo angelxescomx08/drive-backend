@@ -1,7 +1,7 @@
 import type { Config } from "drizzle-kit";
 import dotenv from "dotenv";
 
-const result = dotenv.config({
+const { parsed } = dotenv.config({
   path: "./.env.development",
 });
 
@@ -12,7 +12,7 @@ export default {
   dbCredentials: {
     //url: process.env.URL_DATABASE!,
     //authToken: process.env.DB_AUTH_TOKEN!,
-    url: result.parsed!.URL_DATABASE!,
+    url: parsed!.URL_DATABASE!,
   },
   verbose: true,
 } satisfies Config;
