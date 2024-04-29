@@ -4,6 +4,7 @@ import {
   schemaAuthBodyRegister,
 } from "../types/auth.types";
 import { signToken } from "../utils/token";
+import { user } from "../db/schema";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -40,20 +41,11 @@ export const login = async (req: Request, res: Response) => {
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const resultBody = schemaAuthBodyRegister.safeParse(req.body);
-
-    if (resultBody.success) {
-      const body = resultBody.data;
-      await req.db.user.createUser(body);
-      res.status(201).json({
-        email: body.email,
-        id_user: body.id_user,
-      });
-    } else {
-      const error = resultBody.error;
-      res.status(400).json(error);
-    }
+    const newUser = schemaAuthBodyRegister.parse(req.body);
+    const result = await req.db.dbDrizzle.insert(user).values(newUser);
+    res.status(201).json(result);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Something wrong happen",
     });
