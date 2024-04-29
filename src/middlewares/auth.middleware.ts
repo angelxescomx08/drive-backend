@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { schemaAuthBodyLogin } from "../types/auth.types";
 
-export const registerBodyMiddleware = (
+export const validateBodyMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -10,6 +10,9 @@ export const registerBodyMiddleware = (
   if (resultBody.success) {
     next();
   } else {
-    return res.status(400).json(resultBody.error);
+    return res.status(400).json({
+      ...resultBody.error,
+      error: "not valid data",
+    });
   }
 };

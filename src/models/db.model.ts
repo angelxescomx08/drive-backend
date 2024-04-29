@@ -3,13 +3,14 @@ import { User } from "./user.model";
 import { Folder } from "./folder.model";
 import { LibSQLDatabase } from "drizzle-orm/libsql";
 import { dbDrizzle } from "../db/db";
+import * as schema from "../db/schema";
 
 export class Database {
   private client!: Client;
   public user!: User;
   public folder!: Folder;
 
-  public dbDrizzle!: LibSQLDatabase<Record<string, never>>;
+  public dbDrizzle!: LibSQLDatabase<typeof schema>;
 
   constructor() {
     this.createClient();
