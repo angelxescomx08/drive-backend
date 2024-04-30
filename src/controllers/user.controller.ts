@@ -4,7 +4,6 @@ import { convertToNumber } from "../utils/convert-to-number";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    //const { page = 1, per_page = 10 } = schemaQueryGetUsers.parse(req.query);
     const { page, per_page } = schemaQueryGetUsers.parse({
       page: convertToNumber(req.query.page, 0),
       per_page: convertToNumber(req.query.per_page, 10),

@@ -5,7 +5,6 @@ export const schemaBodyCreateFolder = z.object({
   id_parent: z.string().uuid().optional(),
   id_user: z.string().uuid(),
   folder_name: z.string(),
-  created_at: z.number(),
 });
 
 export type typeBodyCreateFolder = z.infer<typeof schemaBodyCreateFolder>;
