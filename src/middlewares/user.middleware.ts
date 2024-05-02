@@ -7,7 +7,7 @@ export const validateQueryUserMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const { page, per_page } = req.query;
+  const { page = "0", per_page = "10" } = req.query;
   const result = schemaQueryGetUsers.safeParse({
     page: convertToNumber(page, 0),
     per_page: convertToNumber(per_page, 10),

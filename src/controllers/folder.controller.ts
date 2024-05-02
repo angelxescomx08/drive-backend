@@ -4,6 +4,8 @@ import {
   schemaParamIdUserGetFolder,
   schemaQueryGetFolders,
 } from "../types/folder.types";
+import { LibsqlError } from "@libsql/client";
+import { folder } from "../db/schema";
 
 export const getFoldersByUserId = async (req: Request, res: Response) => {
   try {
@@ -30,27 +32,37 @@ export const getFoldersByUserId = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: "Something wrong happen",
+      error: "Something wrong happen",
     });
   }
 };
 
 export const createFolder = async (req: Request, res: Response) => {
   try {
-    const resultBody = schemaBodyCreateFolder.safeParse(req.body);
-    if (resultBody.success) {
-      await req.db.folder.createFolder(resultBody.data);
-      res.status(201).json({
-        ...resultBody.data,
-      });
-    } else {
-      const error = resultBody.error;
-      res.status(400).json(error);
-    }
+    const { folder_name, id_user, id_parent } = schemaBodyCreateFolder.parse(
+      req.body
+    );
+    const newFolder = {
+      folder_name,
+      id_folder: crypto.randomUUID(),
+      id_user,
+      id_parent,
+    };
+    await req.db.dbDrizzle.insert(folder).values(newFolder);
+
+    res.status(201).json({
+      message: "Folder created",
+      folder: newFolder,
+    });
   } catch (error) {
     console.log(error);
+    if (error instanceof LibsqlError) {
+      return res.status(500).json({
+        error: error.message,
+      });
+    }
     res.status(500).json({
-      message: "Something wrong happen",
+      error: "Something wrong happen",
     });
   }
 };

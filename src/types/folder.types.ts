@@ -1,8 +1,7 @@
 import z from "zod";
 
 export const schemaBodyCreateFolder = z.object({
-  id_folder: z.string().uuid(),
-  id_parent: z.string().uuid().optional(),
+  id_parent: z.string().uuid().nullish(),
   id_user: z.string().uuid(),
   folder_name: z.string(),
 });
