@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   schemaBodyCreateFolder,
+  schemaBodyUpdateFolder,
   schemaQueryGetFolders,
   typeQueryGetFolders,
 } from "../types/folder.types";
@@ -14,6 +15,7 @@ export const getFoldersByUserId = async (req: Request, res: Response) => {
     const query: typeQueryGetFolders = {
       id_user: req.query.id_user as string,
       id_parent: req.query.id_parent as string | null | undefined,
+      id_folder: req.query.id_folder as string | null | undefined,
       limit: convertToNumber(req.query.limit, 10),
       page: convertToNumber(req.query.page, 0),
     };
@@ -22,10 +24,14 @@ export const getFoldersByUserId = async (req: Request, res: Response) => {
       id_parent = null,
       limit,
       page,
+      id_folder = null,
     } = schemaQueryGetFolders.parse(query);
     const queries = [eq(folder.id_user, id_user)];
     if (id_parent) {
       queries.push(eq(folder.id_parent, id_parent));
+    }
+    if (id_folder) {
+      queries.push(eq(folder.id_folder, id_folder));
     }
     const result = await req.db.dbDrizzle.query.folder.findMany({
       limit,
@@ -58,6 +64,26 @@ export const createFolder = async (req: Request, res: Response) => {
       message: "Folder created",
       folder: newFolder,
     });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof LibsqlError) {
+      return res.status(500).json({
+        error: error.message,
+      });
+    }
+    res.status(500).json({
+      error: "Something wrong happen",
+    });
+  }
+};
+
+export const updateFolder = async (req: Request, res: Response) => {
+  try {
+    const { folder_name, id_parent } = schemaBodyUpdateFolder.parse(req.body);
+    /* const result = await req.db.dbDrizzle.update(folder).set({
+      folder_name,
+      id_parent,
+    }).where(); */
   } catch (error) {
     console.log(error);
     if (error instanceof LibsqlError) {
