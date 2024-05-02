@@ -1,36 +1,40 @@
 import { Request, Response } from "express";
 import {
   schemaBodyCreateFolder,
-  schemaParamIdUserGetFolder,
   schemaQueryGetFolders,
+  typeQueryGetFolders,
 } from "../types/folder.types";
 import { LibsqlError } from "@libsql/client";
 import { folder } from "../db/schema";
+import { and, eq } from "drizzle-orm";
+import { convertToNumber } from "../utils/convert-to-number";
 
 export const getFoldersByUserId = async (req: Request, res: Response) => {
   try {
-    const paramsResult = schemaParamIdUserGetFolder.safeParse(req.params);
-    const queryResult = schemaQueryGetFolders.safeParse(req.query);
-    if (paramsResult.success && queryResult.success) {
-      const { id_parent } = queryResult.data;
-      const result = id_parent
-        ? await req.db.folder.getFoldersOfParentFolder(
-            paramsResult.data.id_user,
-            id_parent
-          )
-        : await req.db.folder.getRootFolders(paramsResult.data.id_user);
-      res.json(result.rows);
-    } else {
-      if (!paramsResult.success) {
-        const error = paramsResult.error;
-        return res.status(400).json(error);
-      }
-      if (!queryResult.success) {
-        const error = queryResult.error;
-        return res.status(400).json(error);
-      }
+    const query: typeQueryGetFolders = {
+      id_user: req.query.id_user as string,
+      id_parent: req.query.id_parent as string | null | undefined,
+      limit: convertToNumber(req.query.limit, 10),
+      page: convertToNumber(req.query.page, 0),
+    };
+    const {
+      id_user,
+      id_parent = null,
+      limit,
+      page,
+    } = schemaQueryGetFolders.parse(query);
+    const queries = [eq(folder.id_user, id_user)];
+    if (id_parent) {
+      queries.push(eq(folder.id_parent, id_parent));
     }
+    const result = await req.db.dbDrizzle.query.folder.findMany({
+      limit,
+      offset: page,
+      where: and(...queries),
+    });
+    res.json(result);
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       error: "Something wrong happen",
     });

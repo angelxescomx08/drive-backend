@@ -8,18 +8,11 @@ export const schemaBodyCreateFolder = z.object({
 
 export type typeBodyCreateFolder = z.infer<typeof schemaBodyCreateFolder>;
 
-export const schemaParamIdUserGetFolder = schemaBodyCreateFolder.pick({
-  id_user: true,
-});
-
-export type typeParamIdUserGetFolder = z.infer<
-  typeof schemaParamIdUserGetFolder
->;
-
 export const schemaQueryGetFolders = z.object({
-  limit: z.string().regex(/^\d+$/).optional(),
-  page: z.string().regex(/^\d+$/).optional(),
-  id_parent: z.string().uuid().optional(),
+  limit: z.number().int().positive().optional(),
+  page: z.number().int().nonnegative().optional(),
+  id_parent: z.string().uuid().nullish(),
+  id_user: z.string().uuid(),
 });
 
 export type typeQueryGetFolders = z.infer<typeof schemaQueryGetFolders>;
