@@ -18,15 +18,10 @@ export const schemaQueryGetFolders = z.object({
 
 export type typeQueryGetFolders = z.infer<typeof schemaQueryGetFolders>;
 
-export const schemaBodyUpdateFolder = schemaBodyCreateFolder
-  .partial({
-    folder_name: true,
-    id_parent: true,
-  })
-  .omit({
-    id_user: true,
-  }); /* .extend({
-    id_folder
-  }); */
+export const schemaBodyUpdateFolder = z.object({
+  id_folder: z.string().uuid(),
+  id_parent: z.string().uuid().nullish(),
+  folder_name: z.string().optional(),
+});
 
 export type typeBodyUpdateFolder = z.infer<typeof schemaBodyUpdateFolder>;

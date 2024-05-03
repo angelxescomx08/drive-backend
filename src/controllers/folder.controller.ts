@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, query } from "express";
 import {
   schemaBodyCreateFolder,
   schemaBodyUpdateFolder,
   schemaQueryGetFolders,
+  typeBodyUpdateFolder,
   typeQueryGetFolders,
 } from "../types/folder.types";
 import { LibsqlError } from "@libsql/client";
@@ -79,11 +80,32 @@ export const createFolder = async (req: Request, res: Response) => {
 
 export const updateFolder = async (req: Request, res: Response) => {
   try {
-    const { folder_name, id_parent } = schemaBodyUpdateFolder.parse(req.body);
-    /* const result = await req.db.dbDrizzle.update(folder).set({
-      folder_name,
-      id_parent,
-    }).where(); */
+    const params = req.params;
+    const body = req.body;
+    const data: typeBodyUpdateFolder = {
+      id_folder: params.id_folder,
+      folder_name: body.folder_name,
+      id_parent: body.id_parent,
+    };
+    const { id_folder, folder_name, id_parent } =
+      schemaBodyUpdateFolder.parse(data);
+    const result = await req.db.dbDrizzle
+      .update(folder)
+      .set({
+        folder_name,
+        id_parent,
+      })
+      .where(eq(folder.id_folder, id_folder))
+      .returning({
+        id_folder: folder.id_folder,
+        folder_name: folder.folder_name,
+        id_parent: folder.id_parent,
+        id_user: folder.id_user,
+      });
+    res.status(200).json({
+      message: "successfully updated",
+      folder: result.at(0),
+    });
   } catch (error) {
     console.log(error);
     if (error instanceof LibsqlError) {

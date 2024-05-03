@@ -3,6 +3,7 @@ import {
   schemaBodyCreateFolder,
   schemaBodyUpdateFolder,
   schemaQueryGetFolders,
+  typeBodyUpdateFolder,
   typeQueryGetFolders,
 } from "../types/folder.types";
 import { convertToNumber } from "../utils/convert-to-number";
@@ -49,7 +50,14 @@ export const validateBodyUpdateFoldersMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const result = schemaBodyUpdateFolder.safeParse(req.body);
+  const { id_folder } = req.params;
+  const { id_parent, folder_name } = req.body;
+  const data: typeBodyUpdateFolder = {
+    id_folder,
+    folder_name,
+    id_parent,
+  };
+  const result = schemaBodyUpdateFolder.safeParse(data);
   if (!result.success) {
     return res.status(400).json({
       error: "not valid data",
