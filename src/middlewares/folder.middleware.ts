@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   schemaBodyCreateFolder,
   schemaBodyUpdateFolder,
+  schemaDeleteFolder,
   schemaQueryGetFolders,
   typeBodyUpdateFolder,
   typeQueryGetFolders,
@@ -58,6 +59,21 @@ export const validateBodyUpdateFoldersMiddleware = (
     id_parent,
   };
   const result = schemaBodyUpdateFolder.safeParse(data);
+  if (!result.success) {
+    return res.status(400).json({
+      error: "not valid data",
+      ...result.error,
+    });
+  }
+  next();
+};
+
+export const validateIdFolder = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const result = schemaDeleteFolder.safeParse(req.params);
   if (!result.success) {
     return res.status(400).json({
       error: "not valid data",

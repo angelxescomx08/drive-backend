@@ -2,6 +2,7 @@ import { Request, Response, query } from "express";
 import {
   schemaBodyCreateFolder,
   schemaBodyUpdateFolder,
+  schemaDeleteFolder,
   schemaQueryGetFolders,
   typeBodyUpdateFolder,
   typeQueryGetFolders,
@@ -105,6 +106,35 @@ export const updateFolder = async (req: Request, res: Response) => {
     res.status(200).json({
       message: "successfully updated",
       folder: result.at(0),
+    });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof LibsqlError) {
+      return res.status(500).json({
+        error: error.message,
+      });
+    }
+    res.status(500).json({
+      error: "Something wrong happen",
+    });
+  }
+};
+
+export const deleteFolder = async (req: Request, res: Response) => {
+  try {
+    const { id_folder } = schemaDeleteFolder.parse(req.params);
+    const deletedFolder = await req.db.dbDrizzle
+      .delete(folder)
+      .where(eq(folder.id_folder, id_folder))
+      .returning({
+        id_folder: folder.id_folder,
+        id_parent: folder.id_parent,
+        id_user: folder.id_user,
+        folder_name: folder.folder_name,
+      });
+    res.json({
+      message: "successfully deleted",
+      folder: deletedFolder.at(0),
     });
   } catch (error) {
     console.log(error);

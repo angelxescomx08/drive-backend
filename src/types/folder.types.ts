@@ -25,3 +25,9 @@ export const schemaBodyUpdateFolder = z.object({
 });
 
 export type typeBodyUpdateFolder = z.infer<typeof schemaBodyUpdateFolder>;
+
+export const schemaDeleteFolder = z.object({
+  id_folder: z.string().uuid(),
+});
+
+export type typeDeleteFolder = z.infer<typeof schemaDeleteFolder>;
