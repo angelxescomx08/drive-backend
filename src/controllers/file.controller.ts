@@ -3,7 +3,9 @@ import { schemaBodyDeleteFile } from "../types/file.types";
 
 export const createFile = async (req: Request, res: Response) => {
   try {
-    return res.json(req.files);
+    //const files: Express.Multer.File[] = req.files as Express.Multer.File[]
+
+    return res.json({});
   } catch (error) {
     console.log(error);
     res.status(500).json({
