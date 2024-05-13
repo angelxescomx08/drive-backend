@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 export const schemaBodyCreateFile = z.object({
-  id_user: z.string().uuid(),
   id_folder: z.string().uuid().nullish(),
   file_name: z.string(),
 });
@@ -13,3 +12,26 @@ export const schemaBodyDeleteFile = z.object({
 });
 
 export type typeBodyDeleteFile = z.infer<typeof schemaBodyDeleteFile>;
+
+export interface FileS3 {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  size: number;
+  bucket: string;
+  key: string;
+  acl: string;
+  contentType: string;
+  contentDisposition: null;
+  contentEncoding: null;
+  storageClass: string;
+  serverSideEncryption: null;
+  metadata: Metadata;
+  location: string;
+  etag: string;
+}
+
+export interface Metadata {
+  fieldName: string;
+}
