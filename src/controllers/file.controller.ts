@@ -14,7 +14,7 @@ export const createFile = async (req: Request, res: Response) => {
       req.body
     );
 
-    /* const result = await req.db.dbDrizzle
+    const result = await req.db.dbDrizzle
       .insert(file)
       .values({
         aws_key: fileS3.key,
@@ -29,12 +29,11 @@ export const createFile = async (req: Request, res: Response) => {
         file_name: file.file_name,
         url: file.url,
         aws_key: file.aws_key,
-      }); */
+      });
 
     res.json({
       message: "File successfully created",
-      //file: result.at(0),
-      fileS3,
+      file: result.at(0),
     });
   } catch (error) {
     console.log(error);
