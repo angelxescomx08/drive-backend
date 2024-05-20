@@ -8,7 +8,7 @@ import { file } from "../db/schema";
 
 export const createFile = async (req: Request, res: Response) => {
   try {
-    const fileS3: FileS3 = req.file as unknown as FileS3;
+    const fileS3: FileS3[] = req.files as unknown as FileS3[];
 
     const { file_name, id_folder = null } = schemaBodyCreateFile.parse(
       req.body
@@ -17,10 +17,10 @@ export const createFile = async (req: Request, res: Response) => {
     const result = await req.db.dbDrizzle
       .insert(file)
       .values({
-        aws_key: fileS3.key,
+        aws_key: fileS3.at(0)!.key,
         file_name: file_name,
         id_file: crypto.randomUUID(),
-        url: fileS3.location,
+        url: fileS3.at(0)!.location,
         id_folder: id_folder,
       })
       .returning({

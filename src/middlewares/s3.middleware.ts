@@ -15,7 +15,7 @@ export const multerUploadMiddleware = (
   next: NextFunction
 ) => {
   try {
-    return req.s3.getUpload().single("file")(req, res, next);
+    return req.s3.getUpload().array("files")(req, res, next);
   } catch (err) {
     return res.json({
       error: "error",
