@@ -3,8 +3,44 @@ import {
   FileS3,
   schemaBodyCreateFile,
   schemaBodyDeleteFile,
+  schemaGetFiles,
+  typeGetFiles,
 } from "../types/file.types";
 import { file } from "../db/schema";
+import { convertToNumber } from "../utils/convert-to-number";
+import { and, eq, like } from "drizzle-orm";
+
+export const getFiles = async (req: Request, res: Response) => {
+  try {
+    const data: typeGetFiles = {
+      id_folder: req.query.id_folder as string,
+      file_name: req.query.file_name as string,
+      limit: convertToNumber(req.query.limit, 10),
+      page: convertToNumber(req.query.page, 0),
+    };
+    const { id_folder, file_name, limit, page } = schemaGetFiles.parse(data);
+    const queries = [];
+    if (id_folder) {
+      queries.push(eq(file.id_folder, id_folder));
+    }
+    if (file_name) {
+      queries.push(like(file.file_name, `%${file_name}%`));
+    }
+
+    const result = await req.db.dbDrizzle.query.file.findMany({
+      where: and(...queries),
+      limit,
+      offset: page,
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Something wrong happen",
+    });
+  }
+};
 
 export const createFile = async (req: Request, res: Response) => {
   try {

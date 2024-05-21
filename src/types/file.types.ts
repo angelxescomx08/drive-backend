@@ -13,6 +13,15 @@ export const schemaBodyDeleteFile = z.object({
 
 export type typeBodyDeleteFile = z.infer<typeof schemaBodyDeleteFile>;
 
+export const schemaGetFiles = z.object({
+  limit: z.number().int().positive().optional(),
+  page: z.number().int().nonnegative().optional(),
+  id_folder: z.string().uuid().nullish(),
+  file_name: z.string().nullish(),
+});
+
+export type typeGetFiles = z.infer<typeof schemaGetFiles>;
+
 export interface FileS3 {
   fieldname: string;
   originalname: string;
