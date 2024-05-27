@@ -22,6 +22,14 @@ export const schemaGetFiles = z.object({
 
 export type typeGetFiles = z.infer<typeof schemaGetFiles>;
 
+export const schemaUpdateFile = z.object({
+  id_file: z.string().uuid(),
+  id_folder: z.string().uuid().nullish(),
+  file_name: z.string().optional(),
+});
+
+export type typeUpdateFile = z.infer<typeof schemaUpdateFile>;
+
 export interface FileS3 {
   fieldname: string;
   originalname: string;

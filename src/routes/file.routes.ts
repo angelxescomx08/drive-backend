@@ -3,6 +3,7 @@ import {
   createFile,
   deleteFiles,
   getFiles,
+  updateFile,
 } from "../controllers/file.controller";
 import {
   multerErrorHandler,
@@ -11,6 +12,7 @@ import {
 import {
   validateBodyCreateFileMiddleware,
   validateGetFilesMiddleware,
+  validateUpdateFile,
 } from "../middlewares/file.middleware";
 
 const fileRouter = Router();
@@ -28,5 +30,7 @@ fileRouter.post(
 );
 
 fileRouter.delete("/", deleteFiles);
+
+fileRouter.put("/:id_file", [validateUpdateFile], updateFile);
 
 export default fileRouter;

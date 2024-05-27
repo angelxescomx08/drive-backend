@@ -4,7 +4,9 @@ import {
   schemaBodyCreateFile,
   schemaBodyDeleteFile,
   schemaGetFiles,
+  schemaUpdateFile,
   typeGetFiles,
+  typeUpdateFile,
 } from "../types/file.types";
 import { file } from "../db/schema";
 import { convertToNumber } from "../utils/convert-to-number";
@@ -94,6 +96,41 @@ export const deleteFiles = async (req: Request, res: Response) => {
         error,
       });
     }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Something wrong happen",
+    });
+  }
+};
+
+export const updateFile = async (req: Request, res: Response) => {
+  try {
+    const data: typeUpdateFile = {
+      id_folder: req.body.id_folder as string,
+      file_name: req.body.file_name as string,
+      id_file: req.params.id_file,
+    };
+    const { id_file, file_name, id_folder } = schemaUpdateFile.parse(data);
+    const result = await req.db.dbDrizzle
+      .update(file)
+      .set({
+        file_name,
+        id_folder,
+        id_file,
+      })
+      .returning({
+        id_file: file.id_file,
+        id_folder: file.id_folder,
+        file_name: file.file_name,
+        url: file.url,
+        aws_key: file.aws_key,
+      });
+
+    res.status(200).json({
+      message: "successfully updated",
+      folder: result.at(0),
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({

@@ -2,7 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import {
   schemaBodyCreateFile,
   schemaGetFiles,
+  schemaUpdateFile,
   typeGetFiles,
+  typeUpdateFile,
 } from "../types/file.types";
 import { convertToNumber } from "../utils/convert-to-number";
 
@@ -39,7 +41,27 @@ export const validateGetFilesMiddleware = (
     return res.status(400).json({
       message: "invalid data",
       error,
-      query: req.query,
+    });
+  }
+  next();
+};
+
+export const validateUpdateFile = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const data: typeUpdateFile = {
+    id_folder: req.body.id_folder as string,
+    file_name: req.body.file_name as string,
+    id_file: req.params.id_file,
+  };
+  const result = schemaUpdateFile.safeParse(data);
+  if (!result.success) {
+    const error = result.error;
+    return res.status(400).json({
+      message: "invalid data",
+      error,
     });
   }
   next();
