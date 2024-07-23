@@ -4,6 +4,7 @@ import { Folder } from "./folder.model";
 import { LibSQLDatabase } from "drizzle-orm/libsql";
 import { dbDrizzle } from "../db/db";
 import * as schema from "../db/schema";
+import { environment } from "../config/environment";
 
 export class Database {
   private client!: Client;
@@ -21,8 +22,8 @@ export class Database {
 
   createClient() {
     this.client = createClient({
-      url: process.env.URL_DATABASE!,
-      authToken: process.env.DB_AUTH_TOKEN!,
+      url: environment.URL_DATABASE,
+      authToken: environment.DB_AUTH_TOKEN,
     });
   }
 }

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { schemaAuthBodyLogin } from "../types/auth.types";
 import jwt from "jsonwebtoken";
+import { environment } from "../config/environment";
 
 export const validateBodyMiddleware = (
   req: Request,
@@ -24,7 +25,7 @@ export const validateTokenMiddleware = (
   next: NextFunction
 ) => {
   const token = req.headers.x_token as string;
-  jwt.verify(token, process.env.JWT_PASSWORD, (err, decoded) => {
+  jwt.verify(token, environment.JWT_PASSWORD, (err, decoded) => {
     if (err) {
       return res.status(401).json({
         message: "not valid token",

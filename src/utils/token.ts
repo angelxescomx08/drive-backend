@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { typeAuthBodyRegister } from "../types/auth.types";
+import { environment } from "../config/environment";
 
 export const signToken = (user: Omit<typeAuthBodyRegister, "password">) => {
   const token = jwt.sign(
@@ -7,7 +8,7 @@ export const signToken = (user: Omit<typeAuthBodyRegister, "password">) => {
       id_user: user.id_user,
       email: user.email,
     },
-    process.env.JWT_PASSWORD!,
+    environment.JWT_PASSWORD,
     {
       expiresIn: "2w",
     }
@@ -17,7 +18,7 @@ export const signToken = (user: Omit<typeAuthBodyRegister, "password">) => {
 
 export const verifyToken = (token: string): boolean => {
   try {
-    jwt.verify(token, process.env.JWT_PASSWORD!);
+    jwt.verify(token, environment.JWT_PASSWORD);
     return true;
   } catch (error) {
     return false;
