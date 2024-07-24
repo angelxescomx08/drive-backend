@@ -7,7 +7,9 @@
     "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "start": "cross-env NODE_ENV=production node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "drizzle:migrate:dev": "cross-env NODE_ENV=development npx drizzle-kit push:sqlite",
+    "drizzle:migrate:prod": "cross-env NODE_ENV=production npx drizzle-kit push:sqlite"
   },
   "author": "Jose Angel Hernandez Radilla",
   "license": "ISC",

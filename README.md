@@ -41,6 +41,14 @@ Se pueden pushear los cambios directamente los cambios a la base de datos con el
 npx drizzle-kit push:sqlite
 ```
 
+## Migrar a la base de datos de producción
+
+Para migrar la base de datos a producción, ejecuta el siguiente comando:
+
+```bash
+npm run drizzle:migrate:prod
+```
+
 ## Ejecución modo desarrollo
 
 Para ejecutar el proyecto en modo desarrollo, ejecuta el siguiente comando:
