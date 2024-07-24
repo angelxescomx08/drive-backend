@@ -49,6 +49,30 @@ Para migrar la base de datos a producción, ejecuta el siguiente comando:
 npm run drizzle:migrate:prod
 ```
 
+## Migrar a la base de datos de desarrollo
+
+Para migrar la base de datos a desarrollo, ejecuta el siguiente comando:
+
+```bash
+npm run drizzle:migrate:dev
+```
+
+## Poblar la base de datos
+
+Para poblar la base de datos, ejecuta el siguiente comando:
+
+```bash
+npm run drizzle:populatedb:dev
+```
+
+## Poblar la base de datos en producción
+
+Para poblar la base de datos en producción, ejecuta el siguiente comando:
+
+```bash
+npm run drizzle:populatedb:prod
+```
+
 ## Ejecución modo desarrollo
 
 Para ejecutar el proyecto en modo desarrollo, ejecuta el siguiente comando:

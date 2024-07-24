@@ -9,7 +9,9 @@
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "drizzle:migrate:dev": "cross-env NODE_ENV=development npx drizzle-kit push:sqlite",
-    "drizzle:migrate:prod": "cross-env NODE_ENV=production npx drizzle-kit push:sqlite"
+    "drizzle:migrate:prod": "cross-env NODE_ENV=production npx drizzle-kit push:sqlite",
+    "drizzle:populatedb:dev": "cross-env NODE_ENV=development ts-node src/db/seed.ts",
+    "drizzle:populatedb:prod": "cross-env NODE_ENV=production ts-node src/db/seed.ts"
   },
   "author": "Jose Angel Hernandez Radilla",
   "license": "ISC",
