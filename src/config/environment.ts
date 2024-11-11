@@ -15,9 +15,9 @@ if (NODE_ENV === 'production') {
   envPath = '.env';
 }
 
-const envPathResolved = path.resolve(__dirname,"../..",envPath)
+const envPathResolved = path.resolve(__dirname, "../..", envPath)
 
-config({ path:  envPathResolved });
+config({ path: envPathResolved, override: true });
 
 export const environment = {
   URL_DATABASE: env.get("URL_DATABASE").required().asString(),
