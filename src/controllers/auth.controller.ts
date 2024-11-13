@@ -1,61 +1,82 @@
 import { Response, Request } from "express";
-import {
-  schemaAuthBodyLogin,
-  schemaAuthBodyRegister,
-} from "../types/auth.types";
+import { schemaAuthBodyLogin, typeAuthBodyRegister } from "../types/auth.types";
 import { signToken } from "../utils/token";
+import { user } from "../db/schema";
+import bcrypt from "bcryptjs";
+import { LibsqlError } from "@libsql/client";
+import { eq } from "drizzle-orm";
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const resultBody = schemaAuthBodyLogin.safeParse(req.body);
+    const { email, password } = schemaAuthBodyLogin.parse(req.body);
 
-    if (resultBody.success) {
-      const body = resultBody.data;
-      const result = await req.db.user.verifyLogin(body);
-      if (result.success) {
-        const token = signToken({
-          email: result.user!.email as string,
-          id_user: result.user!.id_user as string,
-        });
-        res.json({
-          ...result,
-          token,
-        });
-      } else {
-        res.json({
-          ...result,
-          message: "Invalid credentials",
-        });
-      }
-    } else {
-      const error = resultBody.error;
-      res.status(400).json(error);
+    const result = await req.db.dbDrizzle.query.user.findFirst({
+      where: eq(user.email, email),
+    });
+
+    if (!result) {
+      return res.status(400).json({
+        error: "invalid credentials",
+      });
     }
+
+    const { id_user, password: hash } = result;
+    const valid = bcrypt.compareSync(password, hash);
+
+    if (!valid) {
+      return res.status(401).json({
+        error: "invalid credentials",
+      });
+    }
+
+    const token = signToken({
+      email,
+      id_user,
+    });
+
+    res.json({
+      message: "welcomed",
+      token,
+      user: {
+        email,
+        id_user,
+      },
+    });
   } catch (error) {
     res.status(500).json({
-      message: "Something wrong happen",
+      error: "Something wrong happen",
     });
   }
 };
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const resultBody = schemaAuthBodyRegister.safeParse(req.body);
-
-    if (resultBody.success) {
-      const body = resultBody.data;
-      await req.db.user.createUser(body);
-      res.status(201).json({
-        email: body.email,
-        id_user: body.id_user,
+    const { email, password } = schemaAuthBodyLogin.parse(req.body);
+    const hashPassword = bcrypt.hashSync(password);
+    const newUser: typeAuthBodyRegister = {
+      email,
+      password: hashPassword,
+      id_user: crypto.randomUUID(),
+    };
+    await req.db.dbDrizzle.insert(user).values({
+      ...newUser,
+    });
+    res.status(201).json({
+      message: "user created",
+      user: {
+        id_user: newUser.id_user,
+        email: newUser.email,
+      },
+    });
+  } catch (error: unknown | LibsqlError) {
+    if (error instanceof LibsqlError) {
+      console.log(error);
+      return res.status(400).json({
+        error: "email is already used",
       });
-    } else {
-      const error = resultBody.error;
-      res.status(400).json(error);
     }
-  } catch (error) {
-    res.status(500).json({
-      message: "Something wrong happen",
+    return res.status(500).json({
+      error: "Something wrong happen",
     });
   }
 };

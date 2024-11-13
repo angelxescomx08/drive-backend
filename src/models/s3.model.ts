@@ -1,6 +1,7 @@
 import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import multer, { Multer } from "multer";
 import multerS3 from "multer-s3";
+import { environment } from "../config/environment";
 
 export class S3 {
   private s3Client!: S3Client;
@@ -12,10 +13,10 @@ export class S3 {
 
   createS3Client() {
     this.s3Client = new S3Client({
-      region: process.env.AWS_BUCKET_REGION,
+      region: environment.AWS_BUCKET_REGION,
       credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: environment.AWS_ACCESS_KEY,
+        secretAccessKey: environment.AWS_SECRET_ACCESS_KEY,
       },
     });
   }
@@ -24,7 +25,7 @@ export class S3 {
     const upload = multer({
       storage: multerS3({
         s3: this.getS3Client(),
-        bucket: process.env.AWS_BUCKET_NAME,
+        bucket: environment.AWS_BUCKET_NAME,
         metadata: function (req, file, cb) {
           cb(null, { fieldName: file.fieldname });
         },
@@ -54,7 +55,7 @@ export class S3 {
         this.s3Client.send(
           new DeleteObjectCommand({
             Key: key,
-            Bucket: process.env.AWS_BUCKET_NAME,
+            Bucket: environment.AWS_BUCKET_NAME,
           })
         )
       )
