@@ -33,7 +33,7 @@ jobs:
         run: cat .env
       - name: Copy files to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r . "${EC2_USER}@${EC2_IP}:/home/ec2-user/drive-backend/"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r ./* "${EC2_USER}@${EC2_IP}:/home/ec2-user/drive-backend/"
       - name: SSH into EC2 and Install Node.js
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" << 'EOF'
