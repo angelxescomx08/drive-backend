@@ -34,6 +34,7 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_BUCKET_REGION=${{ secrets.AWS_BUCKET_REGION }}" >> .env
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
+          ls -l
 
       - name: Run ls to verify .env file
         run: |
