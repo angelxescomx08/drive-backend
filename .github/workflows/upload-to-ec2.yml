@@ -22,7 +22,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa 
       - name: Create .env file
         run: |
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
           echo "URL_DATABASE=${{ secrets.URL_DATABASE }}" >> .env
           echo "DB_AUTH_TOKEN=${{ secrets.DB_AUTH_TOKEN }}" >> .env
           echo "JWT_PASSWORD=${{ secrets.JWT_PASSWORD }}" >> .env
