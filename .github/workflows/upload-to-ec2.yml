@@ -36,6 +36,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" << 'EOF'
             curl -sL https://rpm.nodesource.com/setup_22.x | sudo -E bash -
             sudo yum install -y nodejs
+            sudo npm install -g pm2
             exit
           EOF
 
@@ -45,6 +46,7 @@ jobs:
             cd /home/ec2-user/drive-backend/
             npm install
             npm run build
-            # sudo npm run start
+            sudo pm2 start dist/index.js --name "drive-backend"
+            pm2 save
             exit
           EOF
