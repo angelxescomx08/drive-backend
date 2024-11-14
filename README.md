@@ -67,7 +67,7 @@ npm run drizzle:populatedb:dev
 
 ## Poblar la base de datos en producción
 
-Para poblar la base de datos en producción, ejecuta el siguiente comando: 
+Para poblar la base de datos en producción, ejecuta el siguiente comando:
 
 ```bash
 npm run drizzle:populatedb:prod
