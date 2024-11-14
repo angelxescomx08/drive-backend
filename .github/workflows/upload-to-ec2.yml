@@ -49,15 +49,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" << 'EOF'
             cd /home/ec2-user/drive-backend/
             npm install
-            pm2 start server.js
-            exit
-          EOF
-      - name: SSH into EC2 and Start Node.js Server
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" << 'EOF'
-            cd /home/ec2-user/drive-backend/
-            npm install        
-            pm2 start server.js
+            npm run build
+            npm run start
             exit
           EOF
 
