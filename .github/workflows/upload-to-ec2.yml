@@ -23,6 +23,7 @@ jobs:
       - name: Create remote directory
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" "mkdir -p /home/ec2-user/drive-backend/"
+
       - name: Create .env file
         run: |
           echo "URL_DATABASE=${{ secrets.URL_DATABASE }}" >> .env
@@ -32,11 +33,15 @@ jobs:
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_BUCKET_REGION=${{ secrets.AWS_BUCKET_REGION }}" >> .env
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
-      - name: Run ls
-        run: ls
+
+      - name: Run ls to verify .env file
+        run: |
+          ls -l
+
       - name: Copy files to EC2
         run: |
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r ./* "${EC2_USER}@${EC2_IP}:/home/ec2-user/drive-backend/"
+
       - name: SSH into EC2 and Install Node.js
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" << 'EOF'
@@ -44,6 +49,7 @@ jobs:
             sudo yum install -y nodejs
             exit
           EOF
+
       - name: SSH into EC2 and Start Node.js Server
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" << 'EOF'
@@ -53,4 +59,3 @@ jobs:
             npm run start
             exit
           EOF
-
