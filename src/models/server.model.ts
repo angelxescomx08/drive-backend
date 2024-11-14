@@ -19,7 +19,7 @@ export class Server {
 
   constructor() {
     this.app = express();
-    this.port = 3000;
+    this.port = 80;
     this.db = new Database();
     this.s3 = new S3();
 
@@ -36,6 +36,9 @@ export class Server {
   }
 
   applyRoutes() {
+    this.app.get("/", (req, res) => {
+      res.json({ message: "Hello World" });
+    });
     this.app.use("/auth", authRouter);
     this.app.use("/user", userRouter);
     this.app.use("/folder", folderRouter);
