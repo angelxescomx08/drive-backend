@@ -20,8 +20,12 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa 
+      - name: Create remote directory
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" "mkdir -p /home/ec2-user/drive-backend/"
       - name: Create .env file
         run: |
+          cd /home/ec2-user/drive-backend/
           echo "URL_DATABASE=${{ secrets.URL_DATABASE }}" >> .env
           echo "DB_AUTH_TOKEN=${{ secrets.DB_AUTH_TOKEN }}" >> .env
           echo "JWT_PASSWORD=${{ secrets.JWT_PASSWORD }}" >> .env
@@ -31,9 +35,6 @@ jobs:
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
       - name: show .env file
         run: cat .env
-      - name: Create remote directory
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" "mkdir -p /home/ec2-user/drive-backend/"
       - name: Copy files to EC2
         run: |
           scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r ./* "${EC2_USER}@${EC2_IP}:/home/ec2-user/drive-backend/"
