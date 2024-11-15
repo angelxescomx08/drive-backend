@@ -21,3 +21,5 @@ jobs:
           echo "URL_DATABASE=${{ secrets.URL_DATABASE }}" >> .env
       - name: List files
         run: ls -a
+      - name: Show content
+        run: sudo cat .env
