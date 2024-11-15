@@ -67,7 +67,7 @@ jobs:
             npm install
             npm run build
             sudo pm2 stop "drive-backend" || true
-            sudo pm2 start "npm run start" --name "drive-backend" --no-daemon
+            sudo pm2 start "npm run start" --name "drive-backend"
             sudo pm2 save
             exit
           EOF
