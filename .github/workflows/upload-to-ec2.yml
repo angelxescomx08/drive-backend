@@ -68,6 +68,6 @@ jobs:
             npm run build
             sudo pm2 stop "drive-backend" || true
             sudo pm2 start dist/index.js --name "drive-backend"
-            pm2 save
+            sudo pm2 save
             exit
           EOF
