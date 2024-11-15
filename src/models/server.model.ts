@@ -37,7 +37,7 @@ export class Server {
 
   applyRoutes() {
     this.app.get("/", (req, res) => {
-      res.json({ message: "Hello World" });
+      res.json({ message: "Hello World FROM AWS!!!" });
     });
     this.app.use("/auth", authRouter);
     this.app.use("/user", userRouter);

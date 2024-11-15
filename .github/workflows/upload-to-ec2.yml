@@ -33,12 +33,6 @@ jobs:
           echo "JWT_PASSWORD=${{ secrets.JWT_PASSWORD }}" >> env.txt
           echo "URL_DATABASE=${{ secrets.URL_DATABASE }}" >> env.txt
 
-      - name: List files
-        run: ls -a
-
-      - name: Show content
-        run: sudo cat env.txt
-
       - name: Create remote directory
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" "mkdir -p /home/ec2-user/drive-backend/"
