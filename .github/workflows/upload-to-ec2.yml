@@ -15,21 +15,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa 
-      - name: Ensure write permissions
+
+      - name: Create .env
         run: |
-          chmod 777 .
+          touch .env
+          echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> .env
+          echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
+          echo "AWS_BUCKET_REGION=${{ secrets.AWS_BUCKET_REGION }}" >> .env
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+          echo "DB_AUTH_TOKEN=${{ secrets.DB_AUTH_TOKEN }}" >> .env
+          echo "JWT_PASSWORD=${{ secrets.JWT_PASSWORD }}" >> .env
+          echo "URL_DATABASE=${{ secrets.URL_DATABASE }}" >> .env
+
+      - name: List files
+        run: ls -a
+
+      - name: Show content
+        run: sudo cat .env
+
       - name: Create remote directory
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa "${EC2_USER}@${EC2_IP}" "mkdir -p /home/ec2-user/drive-backend/"
 
-      - name: Copy files to EC2
+      - name: Copy all files to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r ./* "${EC2_USER}@${EC2_IP}:/home/ec2-user/drive-backend/"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r . "${EC2_USER}@${EC2_IP}:/home/ec2-user/drive-backend/"
 
       - name: SSH into EC2 and Install Node.js
         run: |
@@ -46,6 +62,7 @@ jobs:
             cd /home/ec2-user/drive-backend/
             npm install
             npm run build
+            sudo pm2 stop "drive-backend" || true
             sudo pm2 start dist/index.js --name "drive-backend"
             pm2 save
             exit
