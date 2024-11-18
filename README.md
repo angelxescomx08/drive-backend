@@ -104,3 +104,17 @@ Para ejecutar los tests del proyecto, ejecuta el siguiente comando:
 ```bash
 npm run test
 ```
+
+## Crear imagen de docker
+
+Para crear la imagen de docker, ejecuta el siguiente comando:
+
+```bash
+docker build -t drive-backend .
+```
+
+Si se desea correr la imagen de docker, ejecuta el siguiente comando (recuerda tener el archivo `.env` en la raíz del proyecto):
+
+```bash
+docker run -p 80:80 --env-file .env drive-backend 
+```
