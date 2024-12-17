@@ -1,12 +1,31 @@
-FROM node:22.11.0 AS BUILDER
-WORKDIR /app
+FROM node as builder
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm ci
+
 COPY . .
-ENV key=value
-RUN npm install
+
 RUN npm run build
 
-FROM node:22.11.0 AS PRODUCTION
-WORKDIR /app
+FROM node:slim
+
+ENV NODE_ENV production
+USER node
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+
+RUN npm ci --production
+
+COPY --from=builder /usr/src/app/dist ./dist
+
 EXPOSE 80
-COPY --from=BUILDER /app/ .
-CMD [ "node", "./dist/index.js" ]
+CMD [ "node", "dist/index.js" ]
